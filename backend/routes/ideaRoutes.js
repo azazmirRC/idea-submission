@@ -15,11 +15,12 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-// ✅ Route to Submit an Idea
+// ✅ Route to Submit an Idea (With Email)
 router.post("/ideas", upload.single("file"), async (req, res) => {
   try {
     const newIdea = new Idea({
       name: req.body.name,
+      email: req.body.email, // ✅ Save email in the database
       employeeId: req.body.employeeId,
       ideaDesc: req.body.ideaDesc,
       filePath: req.file ? `/uploads/${req.file.filename}` : "",
@@ -65,6 +66,35 @@ router.post("/update-idea/:id", async (req, res) => {
     res.status(500).json({ error: "Error updating idea status" });
   }
 });
+
+router.post("/update-comment/:id", async (req, res) => {
+  try {
+    const { comment } = req.body;
+
+    if (comment === undefined) {
+      return res.status(400).json({ message: "Comment is required" });
+    }
+
+    const updatedIdea = await Idea.findByIdAndUpdate(
+      req.params.id,
+      { comment },
+      { new: true }
+    );
+
+    if (!updatedIdea) {
+      return res.status(404).json({ message: "Idea not found" });
+    }
+
+    res.status(200).json({ message: "Comment updated successfully", updatedIdea });
+  } catch (error) {
+    console.error("Error updating comment:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
+
+
 
 // ✅ Fixed: Route to Update Priority
 router.post("/update-priority/:id", async (req, res) => {

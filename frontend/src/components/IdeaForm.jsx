@@ -24,22 +24,33 @@ const IdeaForm = () => {
     }
 
     // ✅ Employee ID validation: Must be at most 8 digits
-    const employeeIdPattern = /^\d{1,8}$/; // Allows 1 to 8 digits only
+    const employeeIdPattern = /^\d{1,8}$/;
     if (!employeeIdPattern.test(employeeId)) {
       setErrorMessage("Employee ID must be a number with up to 8 digits.");
       return;
     }
 
+    // ✅ Create FormData Object
     const formData = new FormData();
     formData.append("name", name);
-    formData.append("email", email);
+    formData.append("email", email); // ✅ Ensure email is included
     formData.append("employeeId", employeeId);
     formData.append("ideaDesc", ideaDesc);
     formData.append("file", file);
 
+    // ✅ Debugging: Log FormData before sending
+    console.log("Submitting Form Data:");
+    for (let pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
+
     try {
-      await axios.post(`${API_BASE_URL}/api/ideas`, formData);
-      
+      await axios.post(`${API_BASE_URL}/api/ideas`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data", // ✅ Ensure proper Content-Type
+        },
+      });
+
       setSuccessMessage("Idea Submitted Successfully! ✅");
       setTimeout(() => setSuccessMessage(""), 3000);
       setErrorMessage(""); // Clear error on success
@@ -53,7 +64,6 @@ const IdeaForm = () => {
 
       // ✅ Clear file input field manually
       document.getElementById("fileInput").value = "";
-      
     } catch (error) {
       console.error("Error submitting idea:", error);
       setErrorMessage("Failed to submit idea. Please try again.");
@@ -64,61 +74,61 @@ const IdeaForm = () => {
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="bg-white p-8 rounded-lg shadow-lg w-96">
         <h2 className="text-2xl font-semibold text-center text-gray-700 mb-4">Submit Your Idea</h2>
-        
+
         {/* Display error message if exists */}
         {errorMessage && <p className="text-red-500 text-center">{errorMessage}</p>}
-        
+
         {/* Display success message if exists */}
         {successMessage && <p className="text-green-500 text-center">{successMessage}</p>}
-        
+
         <form onSubmit={handleSubmit} className="flex flex-col space-y-4" encType="multipart/form-data">
-          <input 
-            type="text" 
-            placeholder="Name" 
-            className="p-2 border rounded-md" 
-            value={name} 
-            onChange={(e) => setName(e.target.value)} 
-            required 
+          <input
+            type="text"
+            placeholder="Name"
+            className="p-2 border rounded-md"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
           />
-          
-          <input 
-            type="email" 
-            placeholder="Email (must be @royalcyber.com)" 
-            className="p-2 border rounded-md" 
-            value={email} 
-            onChange={(e) => setEmail(e.target.value)} 
-            required 
+
+          <input
+            type="email"
+            placeholder="Email (must be @royalcyber.com)"
+            className="p-2 border rounded-md"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
           />
-          
-          <input 
-            type="text" 
-            placeholder="Employee ID (up to 8 Digits)" 
-            className="p-2 border rounded-md" 
-            value={employeeId} 
+
+          <input
+            type="text"
+            placeholder="Employee ID (up to 8 Digits)"
+            className="p-2 border rounded-md"
+            value={employeeId}
             onChange={(e) => {
               // Prevent more than 8 digits
               if (/^\d{0,8}$/.test(e.target.value)) {
                 setEmployeeId(e.target.value);
               }
-            }} 
-            required 
+            }}
+            required
           />
-          
-          <textarea 
-            placeholder="Describe your idea" 
-            className="p-2 border rounded-md h-24" 
-            value={ideaDesc} 
-            onChange={(e) => setIdeaDesc(e.target.value)} 
+
+          <textarea
+            placeholder="Describe your idea"
+            className="p-2 border rounded-md h-24"
+            value={ideaDesc}
+            onChange={(e) => setIdeaDesc(e.target.value)}
             required
           ></textarea>
-          
-          <input 
-            type="file" 
-            id="fileInput" 
-            className="p-2 border rounded-md" 
-            onChange={(e) => setFile(e.target.files[0])} 
+
+          <input
+            type="file"
+            id="fileInput"
+            className="p-2 border rounded-md"
+            onChange={(e) => setFile(e.target.files[0])}
           />
-          
+
           <button className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600">Submit Idea</button>
         </form>
       </div>
