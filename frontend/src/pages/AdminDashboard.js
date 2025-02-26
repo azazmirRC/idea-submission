@@ -14,6 +14,7 @@ const AdminDashboard = () => {
   // ✅ Fetch All Ideas
   const fetchIdeas = async () => {
     try {
+      console.log(`backend url: ${API_BASE_URL}`);
       const res = await axios.get(`${API_BASE_URL}/api/ideas`);
       setIdeas(res.data);
     } catch (err) {
