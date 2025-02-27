@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaTrash } from "react-icons/fa"; // Importing delete icon
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const API_BASE_URL = process.env.REACT_APP_BACKEND_URL;

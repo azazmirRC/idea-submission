@@ -5,6 +5,7 @@ const nodemailer = require("nodemailer");
 require("dotenv").config();
 
 const app = express();
+const path = require("path");
 
 // Middleware
 app.use(cors());
@@ -36,6 +37,14 @@ const transporter = nodemailer.createTransport({
     pass: process.env.SMTP_PASSWORD, // Your email password
   },
 });
+
+
+
+// Serve static files from the uploads directory
+app.use("/uploads", (req, res, next) => {
+  console.log(`Serving file: ${req.path}`);
+  next();
+}, express.static(path.join(__dirname, "uploads")));
 
 
 // ✅ Route to Send Verification Code
