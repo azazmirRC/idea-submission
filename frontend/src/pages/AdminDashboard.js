@@ -96,35 +96,6 @@ const AdminDashboard = () => {
     }
   };
 
-  const saveComment = async (id) => {
-    if (!commentInputs[id] || commentInputs[id].trim() === "") {
-      alert("Comment cannot be empty!"); // Simple alert instead of toast
-      return;
-    }
-
-    try {
-      const res = await axios.post(`${API_BASE_URL}/api/update-comment/${id}`, {
-        comment: commentInputs[id], // ✅ Send correct data
-      });
-
-      if (res.status === 200) {
-        // ✅ Update the UI instantly
-        setIdeas((prevIdeas) =>
-          prevIdeas.map((idea) => (idea._id === id ? { ...idea, comment: commentInputs[id] } : idea))
-        );
-
-        // ✅ Clear the input field
-        setCommentInputs((prev) => ({ ...prev, [id]: "" }));
-
-        // ✅ Show success alert
-        alert("Comment updated successfully!");
-      }
-    } catch (err) {
-      console.error("Error updating comment:", err);
-      alert("Failed to update comment. Please try again.");
-    }
-  };
-
 
 
 
@@ -141,7 +112,6 @@ const AdminDashboard = () => {
             <tr className="bg-gray-200">
               <th className="p-2 border">Name</th>
               <th className="p-2 border">Email</th>
-              <th className="p-2 border">Employee ID</th>
               <th className="p-2 border">Idea Description</th>
               <th className="p-2 border">Screenshot</th>
               <th className="p-2 border">Status</th>
@@ -156,7 +126,6 @@ const AdminDashboard = () => {
                 <tr key={idea._id} className="text-center">
                   <td className="p-2 border">{idea.name}</td>
                   <td className="p-2 border">{idea.email}</td>
-                  <td className="p-2 border">{idea.employeeId}</td>
                   <td className="p-2 border">{idea.ideaDesc}</td>
                   <td className="p-2 border">
                     <a

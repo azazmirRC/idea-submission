@@ -7,7 +7,6 @@ const API_BASE_URL = process.env.REACT_APP_BACKEND_URL || "http://localhost:5000
 const IdeaForm = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [employeeId, setEmployeeId] = useState("");
   const [ideaDesc, setIdeaDesc] = useState("");
   const [file, setFile] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
@@ -23,18 +22,12 @@ const IdeaForm = () => {
       return;
     }
 
-    // ✅ Employee ID validation: Must be at most 8 digits
-    const employeeIdPattern = /^\d{1,8}$/;
-    if (!employeeIdPattern.test(employeeId)) {
-      setErrorMessage("Employee ID must be a number with up to 8 digits.");
-      return;
-    }
+   
 
     // ✅ Create FormData Object
     const formData = new FormData();
     formData.append("name", name);
     formData.append("email", email); // ✅ Ensure email is included
-    formData.append("employeeId", employeeId);
     formData.append("ideaDesc", ideaDesc);
     formData.append("file", file);
 
@@ -58,7 +51,6 @@ const IdeaForm = () => {
       // ✅ Clear all input fields after successful submission
       setName("");
       setEmail("");
-      setEmployeeId("");
       setIdeaDesc("");
       setFile(null);
 
@@ -100,19 +92,7 @@ const IdeaForm = () => {
             required
           />
 
-          <input
-            type="text"
-            placeholder="Employee ID (up to 8 Digits)"
-            className="p-2 border rounded-md"
-            value={employeeId}
-            onChange={(e) => {
-              // Prevent more than 8 digits
-              if (/^\d{0,8}$/.test(e.target.value)) {
-                setEmployeeId(e.target.value);
-              }
-            }}
-            required
-          />
+         
 
           <textarea
             placeholder="Describe your idea"

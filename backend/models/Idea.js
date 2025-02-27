@@ -3,7 +3,6 @@ const mongoose = require("mongoose");
 const IdeaSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true }, // ✅ Ensure email is stored
-  employeeId: { type: String, required: true },
   ideaDesc: { type: String, required: true },
   filePath: { type: String },
   status: { type: String, default: "Pending" },

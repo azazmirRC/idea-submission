@@ -21,7 +21,6 @@ router.post("/ideas", upload.single("file"), async (req, res) => {
     const newIdea = new Idea({
       name: req.body.name,
       email: req.body.email, // ✅ Save email in the database
-      employeeId: req.body.employeeId,
       ideaDesc: req.body.ideaDesc,
       filePath: req.file ? `/uploads/${req.file.filename}` : "",
       status: "Pending",
