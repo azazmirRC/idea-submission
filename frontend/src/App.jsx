@@ -7,7 +7,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<IdeaForm />} />
-        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/HRYF8M6TXF" element={<AdminDashboard />} />
       </Routes>
     </Router>
   );
